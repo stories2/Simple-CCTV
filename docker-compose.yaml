@@ -35,7 +35,7 @@ services:
       - cctvnet
     restart: always
     volumes:
-      - ./data:/app/data
+      - ./data:/app/src/hls
     depends_on:
       - cctv_ffmpeg
     logging:
