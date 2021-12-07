@@ -4,7 +4,7 @@ RUN mkdir /usr/share/nginx/well-known
 
 RUN apt update
 RUN apt-get install vim htop tmux -y
-RUN apt-get install cron -y
+# RUN apt-get install cron -y
 
 COPY default.conf /etc/nginx/conf.d/default.conf
 #cd Home-Server
