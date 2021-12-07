@@ -7,8 +7,8 @@ RUN [ "npm", "install", "pm2@5.1.2", "-g" ]
 EXPOSE 3000/tcp
 
 WORKDIR /app
-COPY ./ecosystem.config.js ./
-COPY ./src ./
+COPY ./ecosystem.config.js /app/
+COPY ./src /app/src/
 
 WORKDIR /app/src
 RUN [ "npm", "i" ]
