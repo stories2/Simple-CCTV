@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM raspbian/stretch:041518
 
 WORKDIR /ffmpeg
 RUN apt update
