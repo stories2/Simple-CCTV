@@ -1,5 +1,6 @@
 FROM ubuntu:21.04
 
+WORKDIR /ffmpeg
 RUN apt update
 RUN apt install ffmpeg htop vim tmux -y
 RUN ffmpeg –version

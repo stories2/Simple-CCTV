@@ -1,0 +1,67 @@
+version: "3.8"
+
+networks:
+  cctvnet:
+    name: cctv_net
+    driver: bridge
+
+services:
+  was:
+    build: ./nginx
+    image: nginx_cctvnet
+    container_name: nginx-cctvnet-container
+    networks:
+      - cctvnet
+    restart: always
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/data:/var/www/certbot
+      - ./well-known:/usr/share/nginx/well-known
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - cctv_node
+    logging:
+      driver: "json-file"
+      options:
+          max-file: "5"
+          max-size: "10m"
+  cctv_node:
+    build: ./web
+    image: node_cctvnet
+    container_name: node-cctvnet-container
+    networks:
+      - cctvnet
+    restart: always
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - cctv_ffmpeg
+    logging:
+      driver: "json-file"
+      options:
+          max-file: "5"
+          max-size: "10m"
+  cctv_ffmpeg:
+    build: ./ffmpeg
+    image: ffmpeg_cctvnet
+    container_name: ffmpeg-cctvnet-container
+    networks:
+      - cctvnet
+    restart: always
+    volumes:
+      - ./data:/ffmpeg
+    logging:
+      driver: "json-file"
+      options:
+          max-file: "5"
+          max-size: "10m"
+  # certbot:
+  #   image: certbot/certbot:v1.20.0
+  #   command: certonly --noninteractive --agree-tos -d __domain__ --register-unsafely-without-email --webroot -w /var/www/well-known/
+  #   volumes:
+  #       - ./certbot/conf:/etc/letsencrypt
+  #       - ./certbot/logs:/var/log/letsencrypt
+  #       - ./certbot/data:/var/www/certbot
+  #       - ./well-known:/var/www/well-known
