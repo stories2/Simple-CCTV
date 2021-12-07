@@ -38,6 +38,8 @@ services:
       - ./data:/app/src/hls
     depends_on:
       - cctv_ffmpeg
+    ports:
+      - 3000:3000
     logging:
       driver: "json-file"
       options:
